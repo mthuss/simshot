@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <vector>
+#include <iostream>
 
 // runs an arbitrary command and returns its stdout output
 std::string run_command(const std::string& cmd){
@@ -24,10 +25,15 @@ std::string run_command(const std::string& cmd){
     return result;
 }
 
-std::vector<unsigned char> run_grim(const std::string& geometry){
-    std::string cmd = "grim -g \"" + geometry + "\" -";
+std::vector<unsigned char> run_grim(const std::string geometry){
+    std::string cmd = "";
+    if(geometry.empty())
+        cmd += "grim -";
+    else
+        cmd += "grim -g \"" + geometry + "\" -";
     std::vector<unsigned char> data; // this will store the binary data of the screenshot taken
 
+    // std::cout << cmd.c_str();
     FILE* pipe = popen(cmd.c_str(), "r");
     if(!pipe) return data;
 
